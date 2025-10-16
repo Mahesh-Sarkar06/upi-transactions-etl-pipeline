@@ -18,11 +18,25 @@ BANK_IFSC = {
     'Canara Bank': 'CNRB',
     'Yes Bank': 'YESB',
     'Union Bank of India': 'UBIN',
-    'IDFC First Bank': 'IDFB'
+    'IDFC First Bank': 'IDFB',
+    'Indian Bank': 'IDIB',
+    'Bank of India': 'BKID',
+    'IndusInd Bank': 'INDB',
+    'Central Bank of India': 'CBIN',
+    'Bank of Maharashtra': 'MAHB',
+    'UCO Bank': 'UCBA'
 }
 
 #   --------------------------------------------- PAYMENT GATEWAYS ---------------------------------------------
 PAYMENT_GATEWAY = ['Google Pay', 'PayTM', 'Bhim UPI', 'PhonePe', 'Amazon Pay', 'Cred', 'Wallet']
+
+
+#   --------------------------------------------- PAYMENT GATEWAYS ---------------------------------------------
+CATEGORY = [
+    'Grocery', 'Ticket Booking', 'Hotel Booking', 'Restaurant', 'Food Court', 'Online', 'Clothings', 'Footwears',
+    'Bill Payments', 'Recharge', 'Money Transfer', 'Medicines'
+]
+
 
 #   --------------------------------------------- INDIAN STATES ---------------------------------------------
 STATES = [
@@ -33,7 +47,7 @@ STATES = [
 ]
 
 # --------------------------------------------- FRIST & LAST NAMES ---------------------------------------------
-FIRST_NAME = [
+""" FIRST_NAME = [
     'Abhishek', 'Aman', 'Ajay', 'Arjun', 'Abhimanyu', 'Aditya', 'Ananya', 'Aastha', 'Aishwarya', 'Aditi', 'Arushi', 'Ayushi',
     'Bhanu', 'Bhavesh', 'Bhavya', 'Bhanumati', 'Chandra Shekhar', 'Charu', 'Chitralekha', 'Chirag', 'Chandni', 'Chinmay',
     'Dennis', 'David', 'Divya', 'Dirgha', 'Divyam', 'Diksha', 'Dushyant', 'Disha', 'Elvis', 'Ekta', 'Eklavya', 'Esha',
@@ -52,11 +66,8 @@ LAST_NAME = [
     'Tripathi', 'Akhtar', 'Khanduri', 'Bisht', 'Pant', 'Iyer', 'Agarwal', 'Saini', 'Roy', 'Chakraborty', 'Sen', 'Kaur',
     'Kapoor', 'Ahuja', 'Dey', 'Kesarwani', 'Srivastava', 'Bhati', 'Bhatt', 'Chawla', 'Chaudhary', 'Yadav', 'Kasana', 'Jha',
     'Bhardwaj', 'Bhattacharya', 'Behl', 'Pathak', 'Goswami', 'Rautela', 'Shanmugham', 'Bose', 'Mittal', 'Shetty'
-]
+]"""
 
-# --------------------------------------------- RANDOM NAME GENERATOR ---------------------------------------------
-def random_name():
-    return f'{random.choice(FIRST_NAME)} {random.choice(LAST_NAME)}'
 
 # --------------------------------------------- RANDOM IFSC GENERATOR ---------------------------------------------
 def ifsc_generator(bank_name):
@@ -75,40 +86,20 @@ def random_amount():
     return min(max(base, 1), 100000)
 
 # --------------------------------------------- TRANSACTION GENERATOR ---------------------------------------------
-def transaction_generator(user, receiver_ifsc=None, status='completed', gateway=None, timestamp=None):
+def transaction_generator(status='completed', gateway=None, timestamp=None):
     tx_id = str(uuid.uuid4())
+    bankName = random.choice(BANKS)
 
     txn = {
-        "user_details": {
-            "user_id": user['user_id'],
-            "user_name": user['user_name'],
-            'state': user['state']
-        },
-        "transaction_details": {
-            "transaction_id": tx_id,
-            "bank_name": user['bank_name'],
-            "sender_ifsc": user['sender_ifsc'],
-            "receiver_ifsc": ifsc_generator(random.choice(BANKS)),
-            "amount": random_amount(),
-            "payment_gateway": gateway or random.choice(PAYMENT_GATEWAY)
-        },
+        "transaction_id": tx_id,
+        "bank_name": bankName,
+        "ifsc_code": ifsc_generator(bankName),
+        "amount": random_amount(),
+        "category": random.choice(CATEGORY),
+        "payment_gateway": (gateway or random.choice(PAYMENT_GATEWAY)),
         "status": status,
         "timestamp": (timestamp or datetime.now()).isoformat() + 'Z'
     }
-
-    # txn = {
-    #     "user_id": user['user_id'],
-    #     "transaction_id": tx_id,
-    #     "user_name": user['user_name'],
-    #     "bank_name": user['bank_name'],
-    #     "amount": random_amount(),
-    #     "sender_ifsc": user['sender_ifsc'],
-    #     "receiver_ifsc": ifsc_generator(random.choice(BANKS)),
-    #     "state": user['state'],
-    #     'status': status,
-    #     "payment_gateway": gateway or random.choice(PAYMENT_GATEWAY),
-    #     "timestamp": (timestamp or datetime.now()).isoformat() + 'Z'
-    # }
 
     return txn
 
@@ -120,34 +111,15 @@ class UPITransactionGenerator:
 
         self.n_users = n_users
         self.failed_pct = failed_pct
-        self.users = self._generator_user()
 
-    def _generator_user(self):
-        users = []
-
-        for i in range(self.n_users):
-            bank = random.choice(BANKS)
-
-            user = {
-                "user_id": f'user_{100000 + i}',
-                "user_name": random_name(),
-                "bank_name": bank,
-                "sender_ifsc": ifsc_generator(bank),
-                "state": random.choice(STATES)
-            }
-
-            users.append(user)
-
-        return users
     
     def generate_transaction(self, count=500, start_time=None, time_span_hours=24):
         startTime = start_time or datetime.now(timezone.utc)
 
         for _ in range(count):
-            user = random.choice(self.users)
             status = 'failed' if random.random() < self.failed_pct else 'completed'
             offset_sec = random.randint(0, int(time_span_hours * 3600))
             ts = startTime - timedelta(seconds=offset_sec)
             gateway = random.choice(PAYMENT_GATEWAY)
-            txn = transaction_generator(user, gateway=gateway, status=status, timestamp=ts)
+            txn = transaction_generator(gateway=gateway, status=status, timestamp=ts)
             yield txn
