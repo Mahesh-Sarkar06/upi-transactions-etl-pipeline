@@ -9,6 +9,7 @@ def consumerMain():
     parser = argparse.ArgumentParser(description='UPI Kafka Consumer to S3')
     parser.add_argument('--kafka-topic', required=True, help='Kafka topic name')
     parser.add_argument('--count', type=int, default=50, help='number of messages to read')
+    parser.add_argument('--kafka-bootstrap', required=True, default='localhost:9092', help='Kafka server URL')
     # parser.add_argument('--batch-size', type=int, default=50, help='Number of messages in a batch')
     parser.add_argument('--group-id', default='upi-consumer-group', help='Kafka Consumer group ID')
     parser.add_argument('--s3-bucket', default='{enter-your-s3-bucket-name}', help='Target S3 bucket name')
@@ -19,7 +20,7 @@ def consumerMain():
     # s3://kafka-upi-transactions/kafka_raw_json_data/<YYYY>/<MM>/<DD>/transactions_<timestamp>.json
 
     consumer_conf = {
-        "bootstrap.servers": "localhost:9092",
+        "bootstrap.servers": args.kafka_bootstrap,
         "group.id": args.group_id,
         "auto.offset.reset": 'earliest'
     }
