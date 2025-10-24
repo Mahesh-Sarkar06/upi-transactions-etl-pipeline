@@ -3,8 +3,8 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 #   --------------------------------------------- BANK CONSTANTS ---------------------------------------------
-BANKS = ['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak Mahindra Bank', 'Bank of Baroda',
-         'Punjab National Bank', 'Canara Bank', 'Yes Bank', 'Union Bank of India', 'IDFC First Bank']
+BANKS = ['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak Mahindra Bank', 'Bank of Baroda', 'Bank of India',
+         'Punjab National Bank', 'Canara Bank', 'Yes Bank', 'Union Bank of India', 'IDFC First Bank', 'Indian Bank']
 
 #   --------------------------------------------- BANK IFSC CODE ---------------------------------------------
 BANK_IFSC = {
@@ -28,7 +28,7 @@ BANK_IFSC = {
 }
 
 #   --------------------------------------------- PAYMENT GATEWAYS ---------------------------------------------
-PAYMENT_GATEWAY = ['Google Pay', 'PayTM', 'Bhim UPI', 'PhonePe', 'Amazon Pay', 'Cred', 'Wallet']
+PAYMENT_GATEWAY = ['Google Pay', 'PayTM', 'Bhim UPI', 'Net Banking', 'PhonePe', 'Amazon Pay', 'Cred', 'Wallet', 'RazorPay']
 
 
 #   --------------------------------------------- PAYMENT GATEWAYS ---------------------------------------------
@@ -97,6 +97,7 @@ def transaction_generator(status='completed', gateway=None, timestamp=None):
         "amount": random_amount(),
         "category": random.choice(CATEGORY),
         "payment_gateway": (gateway or random.choice(PAYMENT_GATEWAY)),
+        "state": random.choice(STATES),
         "status": status,
         "timestamp": (timestamp or datetime.now()).isoformat() + 'Z'
     }

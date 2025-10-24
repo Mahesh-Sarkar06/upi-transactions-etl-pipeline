@@ -20,7 +20,8 @@ try:
         if msg.error():
             raise KafkaException(msg.error())
         record = json.loads(msg.value().decode('utf-8'))
-        print(json.dumps(record, indent=4))
+        #print(json.dumps(record, indent=4))
+        print(record)
 except KeyboardInterrupt:
     pass
 finally:
