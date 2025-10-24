@@ -11,8 +11,8 @@ def consumerMain():
     parser.add_argument('--kafka-topic', required=True, help='Kafka topic name')
     parser.add_argument('--count', type=int, default=100, help='number of messages to read')
     parser.add_argument('--group-id', default='upi-consumer-group', help='Kafka Consumer group ID')
-    parser.add_argument('--s3-bucket', default='kafka-upi-transactions', help='Target S3 bucket name without s3')
-    parser.add_argument('--s3-folder', default='kafka_raw_json_data', help='S3 folder path')
+    parser.add_argument('--s3-bucket', default='{AWS-BUCKET-NAME}', help='Target S3 bucket name without s3')
+    parser.add_argument('--s3-folder', default='{RAW-DATA-FOLDER}', help='S3 folder path')
     parser.add_argument('--region', default='ap-south-1', help='AWS S3 bucket region')
     args = parser.parse_args()
 
