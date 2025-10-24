@@ -47,28 +47,6 @@ STATES = [
     'West Bengal', 'Chandigarh', 'Delhi', 'Ladakh', 'Daman & Diu', 'Dadra & Nagar Haveli'
 ]
 
-# --------------------------------------------- FRIST & LAST NAMES ---------------------------------------------
-""" FIRST_NAME = [
-    'Abhishek', 'Aman', 'Ajay', 'Arjun', 'Abhimanyu', 'Aditya', 'Ananya', 'Aastha', 'Aishwarya', 'Aditi', 'Arushi', 'Ayushi',
-    'Bhanu', 'Bhavesh', 'Bhavya', 'Bhanumati', 'Chandra Shekhar', 'Charu', 'Chitralekha', 'Chirag', 'Chandni', 'Chinmay',
-    'Dennis', 'David', 'Divya', 'Dirgha', 'Divyam', 'Diksha', 'Dushyant', 'Disha', 'Elvis', 'Ekta', 'Eklavya', 'Esha',
-    'Falguni', 'Fatima', 'Farooq', 'Faiz', 'Gitika', 'Ganesh', 'Gaurav', 'Gayatri', 'Heena', 'Harsh', 'Harshita', 'Harhsit',
-    'Ishwar Chandra', 'Ishika', 'Joseph', 'Julie', 'Jitendra', 'Juhi', 'Kanika', 'Kashish', 'Kavita', 'Kamal', 'Keshav', 'Ketan',
-    'Lakshmi', 'Lokesh', 'Leena', 'Lucky', 'Mahesh', 'Mahima', 'Manish', 'Mehak', 'Manisha', 'Mayank', 'Mansi', 'Mathew',
-    'Nancy', 'Naveen', 'Nupur', 'Nalin', 'Namita', 'Naman', 'Om', 'Prakash', 'Prateek', 'Praveen', 'Pinky', 'Parvati', 'Payal',
-    'Rashi', 'Ruhi', 'Rochak', 'Rohan', 'Savitri', 'Shubham', 'Sulochana', 'Sagar', 'Swati', 'Shivam', 'Sangeeta', 'Shyam',
-    'Tushar', 'Tanvi', 'Trilochan', 'Tanishq', 'Tushant', 'Tulsi', 'Utsav', 'Urmi', 'Umesh', 'Urvashi', 'Vineet', 'Venkatesh',
-    'Vartika', 'Vernika', 'Vaibhav', 'Vaishnavi', 'Varun', 'Zoya'
-]
-
-LAST_NAME = [
-    'Chaturvedi', 'Trivedi', 'Dwivedi', 'Tiwari', 'Mishra', 'Tyagi', 'Sharma', 'Sarkar', 'Thomas', 'Abraham', 'Rajput',
-    'Kumar', 'Shisodia', 'Chauhan', 'Nirwan', 'Bansal', 'Gupta', 'Jain', 'Rawat', 'Negi', 'Pandey', 'Malik', 'Singh',
-    'Tripathi', 'Akhtar', 'Khanduri', 'Bisht', 'Pant', 'Iyer', 'Agarwal', 'Saini', 'Roy', 'Chakraborty', 'Sen', 'Kaur',
-    'Kapoor', 'Ahuja', 'Dey', 'Kesarwani', 'Srivastava', 'Bhati', 'Bhatt', 'Chawla', 'Chaudhary', 'Yadav', 'Kasana', 'Jha',
-    'Bhardwaj', 'Bhattacharya', 'Behl', 'Pathak', 'Goswami', 'Rautela', 'Shanmugham', 'Bose', 'Mittal', 'Shetty'
-]"""
-
 
 # --------------------------------------------- RANDOM IFSC GENERATOR ---------------------------------------------
 def ifsc_generator(bank_name):
@@ -76,6 +54,7 @@ def ifsc_generator(bank_name):
     branch_code = f'{random.randint(0, 999999):06d}'
 
     return f'{prefix}0{branch_code}'
+
 
 # --------------------------------------------- RANDOM AMOUNT GENERATOR ---------------------------------------------
 def random_amount():
@@ -85,6 +64,7 @@ def random_amount():
         base = random.randint(0, 50)
 
     return min(max(base, 1), 100000)
+
 
 # --------------------------------------------- TRANSACTION GENERATOR ---------------------------------------------
 def transaction_generator(status='completed', gateway=None, timestamp=None):
@@ -104,6 +84,7 @@ def transaction_generator(status='completed', gateway=None, timestamp=None):
     }
 
     return txn
+
 
 # --------------------------------------------- USER AND TRANSACTION ---------------------------------------------
 class UPITransactionGenerator:
