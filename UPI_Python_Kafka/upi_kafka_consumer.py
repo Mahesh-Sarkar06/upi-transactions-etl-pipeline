@@ -7,19 +7,20 @@ from botocore.exceptions import NoCredentialsError, ClientError
 
 def consumerMain():
     parser = argparse.ArgumentParser(description='UPI Kafka Consumer to S3')
+    parser.add_argument('--kafka-bootstrap', required=True, help='Kafka server URL')
     parser.add_argument('--kafka-topic', required=True, help='Kafka topic name')
-    parser.add_argument('--count', type=int, default=50, help='number of messages to read')
+    parser.add_argument('--count', type=int, default=100, help='number of messages to read')
     # parser.add_argument('--batch-size', type=int, default=50, help='Number of messages in a batch')
     parser.add_argument('--group-id', default='upi-consumer-group', help='Kafka Consumer group ID')
-    parser.add_argument('--s3-bucket', default='{enter-your-s3-bucket-name}', help='Target S3 bucket name')
-    parser.add_argument('--s3-folder', default='{enter-your-raw-data-folder-name}', help='S3 folder path')
+    parser.add_argument('--s3-bucket', default='kafka-upi-transactions', help='Target S3 bucket name without s3')
+    parser.add_argument('--s3-folder', default='kafka_raw_json_data', help='S3 folder path')
     parser.add_argument('--region', default='ap-south-1', help='AWS S3 bucket region')
     args = parser.parse_args()
 
-    # s3://kafka-upi-transactions/kafka_raw_json_data/<YYYY>/<MM>/<DD>/transactions_<timestamp>.json
+    # s3://bucket-name/raw-data-folder/<YYYY>/<MM>/<DD>/transactions_<timestamp>.json
 
     consumer_conf = {
-        "bootstrap.servers": "localhost:9092",
+        "bootstrap.servers": args.kafka_bootstrap,
         "group.id": args.group_id,
         "auto.offset.reset": 'earliest'
     }
@@ -40,11 +41,10 @@ def consumerMain():
                 continue
             
             if msg.error():
-                if msg.error():
-                    print(f"Kafka error: {msg.error()}")
+                print(f"Kafka error: {msg.error()}")
                 continue
 
-            txn = json.loads(msg.value().decode('utf-8'))
+            txn = json.loads(msg.value())
             buffer.append(txn)
             read += 1
 
@@ -80,7 +80,7 @@ def writeToS3(records, bucket_name, prefix='kafka_raw_json_data'):
             ContentType = 'application/json'
         )
 
-        print(f"Uploaded {len(batch_data)} transactions to {bucket_name}.")
+        print(f"Uploaded {len(records)} transactions to {bucket_name}.")
 
     except NoCredentialsError:
         print("AWS credentials not found. Configure them using `aws configure`")

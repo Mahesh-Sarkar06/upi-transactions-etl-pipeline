@@ -57,11 +57,11 @@ def deliveryReport(err, msg):
 
 def producerMain():
     parser = argparse.ArgumentParser(description='UPI Kafka Producer')
-    parser.add_argument('--kafka-bootstrap', required=True, help='Kafka server URL')
-    parser.add_argument('--kafka-topic', required=True, help='Kafka topic where messages are queued')
-    parser.add_argument('--count', required=True, type=int, default=1000)
-    parser.add_argument('--users', required=True, type=int, default=100)
-    parser.add_argument('--failed-pct', required=True, type=float, default=0.02)
+    parser.add_argument('--count', type=int, default=100)
+    parser.add_argument('--users', type=int, default=10)
+    parser.add_argument('--failed-pct', type=float, default=0.02)
+    parser.add_argument('--kafka-bootstrap', default='localhost:9092')
+    parser.add_argument('--kafka-topic', required=True)
     parser.add_argument('--rate', type=float, default=0.0)
     parser.add_argument('--seed', type=int, default=None)
     args = parser.parse_args()
@@ -102,7 +102,6 @@ def producerMain():
                 }
             },
             "payment_gateway": txn['payment_gateway'],
-            "state": txn['state'],
             "status": txn['status'],
             "timestamp": txn['timestamp']
         }
@@ -110,7 +109,7 @@ def producerMain():
         producer.produce(
             topic,
             key=str(user['user_id']),
-            value=json.dumps(record),
+            value=json.dumps(record).encode('utf-8'),
             callback=deliveryReport
         )
 
