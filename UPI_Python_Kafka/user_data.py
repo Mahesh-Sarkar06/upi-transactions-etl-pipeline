@@ -3,8 +3,9 @@ import uuid
 from datetime import datetime, timedelta, timezone
 
 #   --------------------------------------------- BANK CONSTANTS ---------------------------------------------
-BANKS = ['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak Mahindra Bank', 'Bank of Baroda', 'Bank of India',
-         'Punjab National Bank', 'Canara Bank', 'Yes Bank', 'Union Bank of India', 'IDFC First Bank', 'Indian Bank']
+BANKS = ['State Bank of India', 'HDFC Bank', 'ICICI Bank', 'Axis Bank', 'Kotak Mahindra Bank', 'Bank of Baroda',
+         'Bank of India', 'Punjab National Bank', 'Canara Bank', 'Yes Bank', 'Union Bank of India', 'IDFC First Bank',
+         'Indian Bank', 'IndusInd Bank', 'Central Bank of India', 'Bank of Maharashtra', 'UCO Bank']
 
 #   --------------------------------------------- BANK IFSC CODE ---------------------------------------------
 BANK_IFSC = {
