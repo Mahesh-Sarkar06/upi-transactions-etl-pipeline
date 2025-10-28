@@ -14,9 +14,9 @@ def getPGUsers():
         conn = pg.connect(
             host='localhost',
             port='5432',
-            user='postgres',
-            password='pgSQL',
-            database='upi_user_data'
+            user='YOUR_POSTGRESQL_USER_NAME',
+            password='YOUR_POSTGRESQL_PASSWORD',
+            database='YOUR_DATABASE_NAME'
         )
 
         curs = conn.cursor()
