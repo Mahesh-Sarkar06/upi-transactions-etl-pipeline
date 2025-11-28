@@ -61,7 +61,7 @@ def producerMain():
     parser.add_argument('--kafka-topic', required=True, help='Kafka topic where messages are queued')
     parser.add_argument('--count', required=True, type=int, default=1000)
     parser.add_argument('--users', required=True, type=int, default=100)
-    parser.add_argument('--failed-pct', required=True, type=float, default=0.02)
+    parser.add_argument('--failed-pct', required=True, type=float, help='Total error records')
     parser.add_argument('--rate', type=float, default=0.0)
     parser.add_argument('--seed', type=int, default=None)
     args = parser.parse_args()
